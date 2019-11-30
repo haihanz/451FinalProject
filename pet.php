@@ -78,15 +78,11 @@ or die('Error connecting to MySQL server.');
 
       print "$query";
 
-      print "aaaaaaaaaaaaa";
       $res = mysql_query($conn, $query)
       or die(mysqli_error($conn));
 
-      print "bbbbbbbbbbbbb";
       // print "$res";
       while($row = mysql_fetch_array($res)){
-        print "aaaaaaaaaa";
-        print "$row";
         // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
         print "$row[fname]  $row[lname]";
       }
