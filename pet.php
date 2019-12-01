@@ -43,6 +43,7 @@ or die('Error connecting to MySQL server.');
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
+<li><a href="about.html">About</a></li>
 </ul>
 </nav>
 <!-- end nav -->
@@ -74,16 +75,16 @@ or die('Error connecting to MySQL server.');
       $query = "SELECT fname, lname
       FROM owner
       WHERE owner_number = ";
-      $query = $query."".$owner_number."";
+      $query = $query."'".$owner_number."'";
 
       print "$query";
-
-      $res = mysql_query($conn, $query)
+      $result = mysqli_query($conn, $query)
       or die(mysqli_error($conn));
 
       // print "$res";
-      while($row = mysql_fetch_array($res)){
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
         // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+        echo "<br>";
         print "$row[fname]  $row[lname]";
       }
       mysqli_free_result($result);
