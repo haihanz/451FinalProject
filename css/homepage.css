@@ -3,6 +3,16 @@
     width: 60%;
     padding: 10px;
   }
+
+.textcenter{
+    text-align:center;
+}
+
+.textpadding{
+    text-align:center;
+   margin:10px 200px;
+}
+
 h4{
 
     font-family: sans-serif;
