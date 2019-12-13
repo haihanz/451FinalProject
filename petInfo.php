@@ -1,3 +1,13 @@
+<?php
+
+include('connectionData.txt');
+
+$conn = mysqli_connect($server, $user, $pass, $dbname, $port)
+or die('Error connecting to MySQL server.');
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
@@ -15,7 +25,7 @@
 </body>
 
 <!-- nav bar -->
-<h1>Pet Information And Activities</h1>
+<h1>Your Pet In Our Motel</h1>
 
 <nav id="nav" role="navigation"> <a href="#nav" title="Show navigation">Show navigation</a> <a href="#" title="Hide navigation">Hide navigation</a>
   <ul class="clearfix">
@@ -29,7 +39,7 @@
 <li> <a href=""><span>Employee</span></a>
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
-    <li><a href="petInfo.html">Pet Information</a></li>
+    <li><a href="petInfo.php">Pet Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
@@ -45,7 +55,72 @@
 <br>
 <br>
 <div class="jumbotron min-vh-100">
+    <p>Please Input Pet Number [From 1 to 15]</p>
+    <form method="POST" action="petInfo.php">
+        <input type="text" name="petID"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
+
+    <?php
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $pet_number= $_POST['petID'];
+
+      $pet_number = mysqli_real_escape_string($conn, $pet_number);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
+
+      $query = "SELECT pet.pet_number, pet.pet_name, records.activity_name, pet.special_description 
+        FROM pet
+        LEFT JOIN records ON pet.pet_number
+        WHERE pet.pet_number = records.pet_num
+        AND pet.pet_number = ";
+      $query = $query."'".$pet_number."'";
+
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
+
+      // print "$res";
+      print "<pre>";
+      echo "<table border='7' class='stats' cellspacing='0'>
+
+      <tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>PET NUMBER  </th>
+      <th>PET NAME   </th>
+      <th>ACTIVITY NAME </th>
+      <th>SEPCIAL DESCRIPTION </th>
+
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[pet_number]  </td>";
+          echo "<td>$row[pet_name]  </td>";
+          echo "<td>$row[activity_name]  </td>";
+          echo "<td>$row[special_description] </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
+
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
+
+ <a href="owner.html">
+<button type="submit">Back</button>
+</a>
+
 <!-- footer -->
 <footer class="py-4 text-black-50">
 	<div class="container text-center">

@@ -1,7 +1,16 @@
+<?php
+
+include('connectionData.txt');
+
+$conn = mysqli_connect($server, $user, $pass, $dbname, $port)
+or die('Error connecting to MySQL server.');
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
- <!--  <link rel="stylesheet" type="text/css" href="css/owner.css"> -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
 
   <meta charset="UTF-8" />
@@ -9,50 +18,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
-  <head>
-    <title>Welcome to Duck's Pet Store</title>
-    <style>
-     table, th, td {
-      border: 2px solid black;
-      border-collapse: collapse;
-    }
-    .pictureContainer{
-      width: 320px;
-      height: 320px;
-      margin-left: 250px;
-      overflow: hidden;
-    }
-
-    .pictureContainer img{
-      transition: transform .2s ease-in-out;
-    }
-
-    .pictureContainer img:hover{
-      transform: translate3d(0px, -150px, 0px);
-    }
-
-    .first{
-      float:left;
-      width:50%;
-      height:500px;
-    }
-    .second{
-      margin-left:50%;
-      height:500px;
-    }
-    </style>
-  </head>
+  
+  <title>Welcome to Duck's Pet Store</title>
 <body>
 
+</body>
+
 <!-- nav bar -->
-<h1>Duck's Pet Motel</h1>
+<h1>Your Pet In Our Motel</h1>
 
 <nav id="nav" role="navigation"> <a href="#nav" title="Show navigation">Show navigation</a> <a href="#" title="Hide navigation">Hide navigation</a>
   <ul class="clearfix">
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.php">Pet</a></li>
+    <li><a href="pet.html">Pet</a></li>
     <li><a href="receipt.html">Receipt</a></li>
   </ul>
     </li>
@@ -74,171 +54,74 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+<div class="jumbotron min-vh-100">
+    <p>Please Input Owner Number [From 1 to 15]</p>
+    <form method="POST" action="owner1.php">
+        <input type="text" name="ownerID"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
 
-<!-- <div class="pictureContainer"> 
-    <img src="./images/owner1.jpeg" height="500" style="margin-left: 200px">
-</div> -->
+    <?php
 
-<div class="first">
-  <div class="pictureContainer">
-    <a href="owner1.php">
-      <img src="./images/owner1.jpeg" height="500">
-    </a>
-  </div>
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $owner_number= $_POST['ownerID'];
 
-  <div class="pictureContainer">
-    <a href="owner3.php">
-      <img src="./images/owner2.jpeg" height="500">
-    </a>
-  </div>
+      $owner_number = mysqli_real_escape_string($conn, $owner_number);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
 
-  <div class="pictureContainer">
-    <a href="owner4.php">
-      <img src="./images/owner3.jpeg" height="600">
-    </a>
-  </div>
-</div>
+      $query = "SELECT fname, lname, email, tel_number
+      FROM owner
+      WHERE owner_number = ";
+      $query = $query."'".$owner_number."'";
 
-<div class="second">
-   <h2>Information Table</h2>
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
 
-    <table style="width:50%">
+      // print "$res";
+      print "<pre>";
+      echo "<table border='7' class='stats' cellspacing='0'>
+
       <tr>
-      <th>Pet Number</th>
-      <th>Pet Name</th> 
-      <th>Pet Owner Number</th>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>Vivi</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Kiw</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Q</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>XiaoK</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>MengMeng</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>Mumu</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>Atticus</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>Mars</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>Ron</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td>Yan</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>Miallox</td>
-      <td>14</td>
-    </tr>
-     <tr>
-      <td>12</td>
-      <td>Plggy</td>
-      <td>2</td>
-    </tr>
-     <tr>
-      <td>13</td>
-      <td>Giffy</td>
-      <td>1</td>
-    </tr>
-     <tr>
-      <td>14</td>
-      <td>Astrix</td>
-      <td>8</td>
-    </tr>
-     <tr>
-      <td>15</td>
-      <td>Austin</td>
-      <td>11</td>
-    </tr>
-     <tr>
-      <td>16</td>
-      <td>Linwieys</td>
-      <td>12</td>
-    </tr>
-     <tr>
-      <td>17</td>
-      <td>Ubatu</td>
-      <td>4</td>
-    </tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>FIRST NAME  </th>
+      <th>LAST NAME  </th>
+      <th>EMAIL </th>
+      <th>PHONE NUMBER  </th>
 
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[fname]  </td>";
+          echo "<td>$row[lname]  </td>";
+          echo "<td>$row[email]  </td>";
+          echo "<td>$row[tel_number] </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
 
-</table>
-  </div>
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
-<br>
-<br>
-<br>
-<br>
+
+ <a href="owner.html">
+<button type="submit">Back</button>
+</a>
 
 <!-- footer -->
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 <footer class="py-4 text-black-50">
-  <div class="container text-center">
+	<div class="container text-center">
     <a href="index.html">
       <img
         style="padding-bottom:6px; width:8%; height:auto; border-radius: 50%;"

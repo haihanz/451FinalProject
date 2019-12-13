@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sliding Image on Hover</title>
+
+	<style>
+	
+	.pictureContainer{
+		width: 150px;
+		height: 150px;
+		overflow: hidden;
+	}
+
+	.pictureContainer img{
+		transition: transform .2s ease-in-out;
+	}
+
+	.pictureContainer img:hover{
+		transform: translate3d(0px, -150px, 0px);
+	}
+	</style>
+
+</head>
+<body>
+	<div class="pictureContainer"> 
+		<img src="./images/smiley.png">
+	</div>
+</body>
+</html>
