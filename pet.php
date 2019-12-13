@@ -32,8 +32,8 @@ or die('Error connecting to MySQL server.');
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.html">Pet</a></li>
-    <li><a href="receipt.html">Receipt</a></li>
+    <li><a href="pet.php">Pet</a></li>
+    <li><a href="receipt.php">Receipt</a></li>
   </ul>
     </li>
 <li> <a href=""><span>Employee</span></a>
@@ -43,24 +43,22 @@ or die('Error connecting to MySQL server.');
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
-<li><a href="about.html">About</a></li>
 </ul>
 </nav>
-<!-- end nav -->
 
-<!-- <h1>한</h1> -->
-<!-- <img src="./images/homepagecat.jpg" alt="homepagecat"> -->
-
-<!-- introduction -->
 <br>
 <br>
 <br>
+<!-- application1 -->
+<!-- customer name and pet name -->
 <div class="jumbotron min-vh-100">
-    <p>Please Input Your Name and Your Pet Name</p>
+    <p>Please Input Your Customer Number</p>
     <form method="POST" action="pet.php">
-        <input type="text" name="ownerID"> 
+        <input type="text" name="ownerID">
+
         <br>
         <input type="submit" value="submit">
+        <br>
     </form>
 
     <?php
@@ -72,26 +70,85 @@ or die('Error connecting to MySQL server.');
       // this is a small attempt to avoid SQL injection
       // better to use prepared statements
 
-      $query = "SELECT fname, lname
+      //select customer name
+      $query1 = "SELECT *
       FROM owner
+      WHERE owner_number = ";
+      $query1 = $query1."'".$owner_number."'";
+
+      $result1 = mysqli_query($conn, $query1)
+      or die(mysqli_error($conn));
+
+      while($row = mysqli_fetch_array($result1, MYSQLI_BOTH)){
+        echo "<br>";
+        echo "Dear customer $row[fname]  $row[lname]";
+        echo "<br>";
+      }
+      mysqli_free_result($result1);
+
+      // select pet information
+      $query = "SELECT owner.fname, owner.lname, pet.pet_name, drop_off_time, pick_up_time, pet.room_number
+      FROM owner JOIN pet USING (owner_number) 
+      JOIN records
+      on pet.pet_number = records.pet_num
       WHERE owner_number = ";
       $query = $query."'".$owner_number."'";
 
-      print "$query";
       $result = mysqli_query($conn, $query)
       or die(mysqli_error($conn));
 
-      // print "$res";
       while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
         // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
         echo "<br>";
-        print "$row[fname]  $row[lname]";
+        echo "Your pet $row[pet_name]";
+        echo "<br>";
+        echo "Have a great time in our pet motel during $row[drop_off_time] to $row[pick_up_time]";
+        echo "<br>";
+        echo "Live in room $row[room_number]";
+        echo "<br>";
       }
+      echo "------------------------------------------------------------------------------------";
       mysqli_free_result($result);
+
+      // select employee who take care of your pet
+      $query2 = "SELECT employee.fname, employee.lname, pet.pet_name
+      FROM owner join pet using (owner_number) join employee on 
+      e_ssn = SSN
+      WHERE owner_number = ";
+      $query2 = $query2."'".$owner_number."'";
+
+      $result2 = mysqli_query($conn, $query2)
+      or die(mysqli_error($conn));
+
+      while($row = mysqli_fetch_array($result2, MYSQLI_BOTH)){
+        echo "<br>";
+        echo "Our empoyee $row[fname]  $row[lname] will take care of your pet $row[pet_name]";
+        echo "<br>"; 
+      }
+      echo "------------------------------------------------------------------------------------";
+      mysqli_free_result($result2);
+
+      // pet activity
+      $query3 = "SELECT pet_name, activity_name, activity_time
+      FROM owner join pet using (owner_number) join records on 
+      pet.pet_number = records.pet_num
+      where owner_number = ";
+      $query3 = $query3."'".$owner_number."'";
+
+      $result3 = mysqli_query($conn, $query3)
+      or die(mysqli_error($conn));
+
+      while($row = mysqli_fetch_array($result3, MYSQLI_BOTH)){
+        echo "<br>";
+        echo "Your pet $row[pet_name] take activity '$row[activity_name]' $row[activity_time] times";
+        echo "<br>"; 
+      }
+      echo "------------------------------------------------------------------------------------";
+      mysqli_free_result($result3);
 
       mysqli_close($conn);
     }
-?>
+  ?>
 </div>
 
 <!-- footer -->
