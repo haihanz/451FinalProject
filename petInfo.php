@@ -1,7 +1,16 @@
+<?php
+
+include('connectionData.txt');
+
+$conn = mysqli_connect($server, $user, $pass, $dbname, $port)
+or die('Error connecting to MySQL server.');
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
-  <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
 
   <meta charset="UTF-8" />
@@ -13,16 +22,17 @@
   <title>Welcome to Duck's Pet Store</title>
 <body>
 
+</body>
 
 <!-- nav bar -->
-<h1>Duck's Pet Motel</h1>
+<h1>Your Pet In Our Motel</h1>
 
 <nav id="nav" role="navigation"> <a href="#nav" title="Show navigation">Show navigation</a> <a href="#" title="Hide navigation">Hide navigation</a>
   <ul class="clearfix">
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.php">Pet</a></li>
+    <li><a href="pet.html">Pet</a></li>
     <li><a href="receipt.html">Receipt</a></li>
   </ul>
     </li>
@@ -30,7 +40,6 @@
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
     <li><a href="petInfo.php">Pet Information</a></li>
-    <li><a href="empInfo.php">Employee Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
@@ -45,49 +54,73 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+<div class="jumbotron min-vh-100">
+    <p>Please Input Pet Number [From 1 to 15]</p>
+    <form method="POST" action="petInfo.php">
+        <input type="text" name="petID"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
 
-<div class="center">
-  <h4>We want to provide the best service for pets. If you are customer, please go to customer
-    page to see more details of your pet. Employee go employee page to check pets status.
-  <h4>
+    <?php
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $pet_number= $_POST['petID'];
+
+      $pet_number = mysqli_real_escape_string($conn, $pet_number);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
+
+      $query = "SELECT pet.pet_number, pet.pet_name, records.activity_name, pet.special_description 
+        FROM pet
+        LEFT JOIN records ON pet.pet_number
+        WHERE pet.pet_number = records.pet_num
+        AND pet.pet_number = ";
+      $query = $query."'".$pet_number."'";
+
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
+
+      // print "$res";
+      print "<pre>";
+      echo "<table border='7' class='stats' cellspacing='0'>
+
+      <tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>PET NUMBER  </th>
+      <th>PET NAME   </th>
+      <th>ACTIVITY NAME </th>
+      <th>SEPCIAL DESCRIPTION </th>
+
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[pet_number]  </td>";
+          echo "<td>$row[pet_name]  </td>";
+          echo "<td>$row[activity_name]  </td>";
+          echo "<td>$row[special_description] </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
+
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+ <a href="owner.html">
+<button type="submit">Back</button>
+</a>
 
-<div>
-  <h2 class = "textcenter">Pet Owner Services</h2>
-</div>
-
-<h6 size = "3" class="textpadding">Owning a pet adds love and purpose to your life; but it’s natural to encounter a few challenges along the way. Caring for your animals - whether they’re birds, fish, reptiles, amphibians or mammals - begins the moment you make them a part of your home. We offer a number of services to help your adjustment go smoother and to help you take great care of your pets.</h6>
-
-<br>
-<br>
-<br>
-<br>
-
-<div align="center">
-  <img src="./images/homemo.jpg"  height="350" id="contact_adv">
-</div>
-
-<br>
-<br>
-<br>
-<br>
-
-
-<div align="center">
-  <img src="./images/homecontact.jpg"  height="475" id="contact_adv">
-</div>
 <!-- footer -->
 <footer class="py-4 text-black-50">
 	<div class="container text-center">

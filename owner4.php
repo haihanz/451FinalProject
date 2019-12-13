@@ -1,7 +1,16 @@
+<?php
+
+include('connectionData.txt');
+
+$conn = mysqli_connect($server, $user, $pass, $dbname, $port)
+or die('Error connecting to MySQL server.');
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
-  <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
 
   <meta charset="UTF-8" />
@@ -13,16 +22,17 @@
   <title>Welcome to Duck's Pet Store</title>
 <body>
 
+</body>
 
 <!-- nav bar -->
-<h1>Duck's Pet Motel</h1>
+<h1>Your Pet In Our Motel</h1>
 
 <nav id="nav" role="navigation"> <a href="#nav" title="Show navigation">Show navigation</a> <a href="#" title="Hide navigation">Hide navigation</a>
   <ul class="clearfix">
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.php">Pet</a></li>
+    <li><a href="pet.html">Pet</a></li>
     <li><a href="receipt.html">Receipt</a></li>
   </ul>
     </li>
@@ -30,7 +40,6 @@
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
     <li><a href="petInfo.php">Pet Information</a></li>
-    <li><a href="empInfo.php">Employee Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
@@ -45,52 +54,79 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+<div class="jumbotron min-vh-100">
+    <p>Please Input the Owner Number [From 1 to 15]</p>
+    <form method="POST" action="owner4.php">
+        <input type="text" name="onwer_cost"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
 
-<div class="center">
-  <h4>We want to provide the best service for pets. If you are customer, please go to customer
-    page to see more details of your pet. Employee go employee page to check pets status.
-  <h4>
+    <?php
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $owner_cost= $_POST['onwer_cost'];
+
+      $owner_cost = mysqli_real_escape_string($conn, $owner_cost);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
+
+      $query = "SELECT petowner.fname, petowner.lname, new_table.pet_name, new_table.price_pet
+      FROM (SELECT DISTINCT pet.pet_name, total_price_customer.price_pet, pet.owner_number
+      FROM pet
+      LEFT JOIN total_price_customer
+      ON total_price_customer.owner_num
+      WHERE total_price_customer.pet_num = pet.pet_number) as new_table, petowner
+      WHERE new_table.owner_number = petowner.owner_number
+      AND petowner.owner_number = ";
+      $query = $query."'".$owner_cost."'";
+
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
+
+      print "$res";
+      print "<pre>"; 
+      echo "<table border='7' class='stats' cellspacing='0'>
+
+      <tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>CUSTOMER FIRST NAME  </th>
+      <th>CUSTOMER LAST NAME  </th>
+      <th>PET NAME  </th>
+      <th>PET COST  </th>
+
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[fname]   </td>";
+          echo "<td>$row[lname]   </td>";
+          echo "<td>$row[pet_name]  </td>";
+          echo "<td>$row[price_pet]  </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
+
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+ <a href="owner.html">
+<button type="submit">Back</button>
+</a>
 
-<div>
-  <h2 class = "textcenter">Pet Owner Services</h2>
-</div>
-
-<h6 size = "3" class="textpadding">Owning a pet adds love and purpose to your life; but it’s natural to encounter a few challenges along the way. Caring for your animals - whether they’re birds, fish, reptiles, amphibians or mammals - begins the moment you make them a part of your home. We offer a number of services to help your adjustment go smoother and to help you take great care of your pets.</h6>
-
-<br>
-<br>
-<br>
-<br>
-
-<div align="center">
-  <img src="./images/homemo.jpg"  height="350" id="contact_adv">
-</div>
-
-<br>
-<br>
-<br>
-<br>
-
-
-<div align="center">
-  <img src="./images/homecontact.jpg"  height="475" id="contact_adv">
-</div>
 <!-- footer -->
 <footer class="py-4 text-black-50">
-	<div class="container text-center">
+  <div class="container text-center">
     <a href="index.html">
       <img
         style="padding-bottom:6px; width:8%; height:auto; border-radius: 50%;"

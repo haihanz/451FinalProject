@@ -43,7 +43,6 @@ or die('Error connecting to MySQL server.');
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
-<li><a href="about.html">About</a></li>
 </ul>
 </nav>
 <!-- end nav -->

@@ -22,11 +22,11 @@ CREATE DATABASE IF NOT EXISTS petstore;
 USE petstore;
 
 --
--- Definition of table `petstore`.`owner`
+-- Definition of table `petstore`.`petowner`
 --
 
-DROP TABLE IF EXISTS `petstore`.`owner`;
-CREATE TABLE  `petstore`.`owner` (
+DROP TABLE IF EXISTS `petstore`.`petowner`;
+CREATE TABLE  `petstore`.`petowner` (
   `owner_number` smallint(6) NOT NULL,
   `fname` char(15) default NULL,
   `lname` char(15) default NULL,
@@ -37,12 +37,12 @@ CREATE TABLE  `petstore`.`owner` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `petstore`.`owner`
+-- Dumping data for table `petstore`.`petowner`
 --
 
-/*!40000 ALTER TABLE `owner` DISABLE KEYS */;
-LOCK TABLES `owner` WRITE;
-INSERT INTO `petstore`.`owner` VALUES (1, 'Anthony','Higgins','1143 Carver Place','anthonyHig@gmail.com','415-8886-6677'),
+/*!40000 ALTER TABLE `petowner` DISABLE KEYS */;
+LOCK TABLES `petowner` WRITE;
+INSERT INTO `petstore`.`petowner` VALUES (1, 'Anthony','Higgins','1143 Carver Place','anthonyHig@gmail.com','415-8886-6677'),
 (2, 'Bob','Shorter','10100 Bay Meadows Ro','BillBobs@aol.com','415-6535-0011'),
 (3, 'Arnold','Sadler','1817 N. Thomas Road','ASssadler@bell.com','283-0338-4290'),
 (4, 'Jane','Miller','478 Joliet Way','janejane@hotmail.com','184-6186-0151'),
@@ -60,7 +60,7 @@ INSERT INTO `petstore`.`owner` VALUES (1, 'Anthony','Higgins','1143 Carver Place
 
 
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `owner` ENABLE KEYS */;
+/*!40000 ALTER TABLE `petowner` ENABLE KEYS */;
 
 
 
@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS `petstore`.`room`;
 CREATE TABLE  `petstore`.`room` (
   `room_number` smallint(6) NOT NULL,
   `size` char(5) NOT NULL,
-  `price/day` smallint(6) NOT NULL,
+  `price_per_day` smallint(6) NOT NULL,
   PRIMARY KEY  (`room_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -118,7 +118,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `petstore`.`pet`;
 CREATE TABLE  `petstore`.`pet` (
   `pet_number` smallint(6) NOT NULL,
-  `name` char(10) NOT NULL,
+  `pet_name` char(10) NOT NULL,
   `kind` char(10) NOT NULL default '',
   `owner_number` smallint(6) NOT NULL,
   `e_ssn` char(15) NOT NULL,
@@ -332,10 +332,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `petstore`.`total_price_customer`;
 CREATE TABLE  `petstore`.`total_price_customer` (
-  `owner_num` smallint(5) NOT NULL,
   `pet_num` smallint(5) NOT NULL,
+  `owner_num` smallint(5) NOT NULL,
   `price_pet` smallint(5) default NULL,
-  PRIMARY KEY  (`owner_num`)
+  PRIMARY KEY  (`pet_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40000 ALTER TABLE `total_price_customer` DISABLE KEYS */;
