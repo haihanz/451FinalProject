@@ -20,18 +20,6 @@ or die('Error connecting to MySQL server.');
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
   
   <title>Welcome to Duck's Pet Store</title>
-
-  <style>
-  .first{
-      float:left;
-      width:50%;
-      height:500px;
-    }
-    .second{
-      margin-left:50%;
-      height:500px;
-    }
-    </style>
 <body>
 
 </body>
@@ -66,89 +54,65 @@ or die('Error connecting to MySQL server.');
 <br>
 <br>
 <br>
-<div class="first">
-  <div>
-    <a href="emp1.php">
-      <button type="submit">Check Employee By Department</button>
-    </a>
-  </div>
-  
-  <div>
-    <a href="emp2.php">
-      <button type="submit">Check Employee's Manager</button>
-    </a>
-  </div>
-</div>
-
 <div class="jumbotron min-vh-100">
-    <div class="second">
-   <h2>Information Table</h2>
+    <p>Please Input the Department Number [From 1 to 4]</p>
+    <form method="POST" action="emp1.php">
+        <input type="text" name="check_emp"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
 
-    <table style="width:50%">
+    <?php
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $emp_by_dep= $_POST['check_emp'];
+
+      $emp_by_dep = mysqli_real_escape_string($conn, $emp_by_dep);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
+
+      $query = "SELECT fname, lname, dep_number, SSN
+      FROM employee as e
+      WHERE e.dep_number =";
+      $query = $query."'".$emp_by_dep."'";
+
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
+
+      print "$res";
+      print "<pre>"; 
+      echo "<table border='7' class='stats' cellspacing='0'>
+
       <tr>
-      <th>First Name</th>
-      <th>Last Name</th> 
-      <th>SSN</th>
-    </tr>
-    <tr>
-      <td>Scarlett</td>
-      <td>Belly</td>
-      <td>222949504</td>
-    </tr>
-    <tr>
-      <td>Vivi</td>
-      <td>Brianna</td>
-      <td>333445555</td>
-    </tr>
-    <tr>
-      <td>Lucy</td>
-      <td>Morg</td>
-      <td>343769695</td>
-    </tr>
-    <tr>
-      <td>Luis</td>
-      <td>Jan</td>
-      <td>345950411</td>
-    </tr>
-    <tr>
-      <td>Molly</td>
-      <td>Olivston</td>
-      <td>434912003</td>
-    </tr>
-    <tr>
-      <td>Madelyn</td>
-      <td>Xavier</td>
-      <td>545769690</td>
-    </tr>
-    <tr>
-      <td>Jeremy</td>
-      <td>Gee</td>
-      <td>632453996</td>
-    </tr>
-    <tr>
-      <td>Mia</td>
-      <td>Katherine</td>
-      <td>648533996</td>
-    </tr>
-    <tr>
-      <td>Jasmine</td>
-      <td>Stipowan</td>
-      <td>683429950</td>
-    </tr>
-    <tr>
-      <td>Kaden</td>
-      <td>Logan</td>
-      <td>700798328</td>
-    </tr>
-    <tr>
-      <td>Vivian</td>
-      <td>Ni</td>
-      <td>719296541</td>
-    </tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>FIRST NAME  </th>
+      <th>LAST NAME  </th>
+      <th>DEP. NUMBER  </th>
+      <th>SSN </th>
 
-    </table>
-    </div>
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[fname]   </td>";
+          echo "<td>$row[lname]   </td>";
+          echo "<td>$row[dep_number]  </td>";
+          echo "<td>$row[SSN]   </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
 
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
 
  <a href="owner.html">
@@ -157,7 +121,7 @@ or die('Error connecting to MySQL server.');
 
 <!-- footer -->
 <footer class="py-4 text-black-50">
-	<div class="container text-center">
+  <div class="container text-center">
     <a href="index.html">
       <img
         style="padding-bottom:6px; width:8%; height:auto; border-radius: 50%;"

@@ -20,18 +20,6 @@ or die('Error connecting to MySQL server.');
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
   
   <title>Welcome to Duck's Pet Store</title>
-
-  <style>
-  .first{
-      float:left;
-      width:50%;
-      height:500px;
-    }
-    .second{
-      margin-left:50%;
-      height:500px;
-    }
-    </style>
 <body>
 
 </body>
@@ -66,89 +54,69 @@ or die('Error connecting to MySQL server.');
 <br>
 <br>
 <br>
-<div class="first">
-  <div>
-    <a href="emp1.php">
-      <button type="submit">Check Employee By Department</button>
-    </a>
-  </div>
-  
-  <div>
-    <a href="emp2.php">
-      <button type="submit">Check Employee's Manager</button>
-    </a>
-  </div>
-</div>
-
 <div class="jumbotron min-vh-100">
-    <div class="second">
-   <h2>Information Table</h2>
+    <p>Please Input the Department Number [From 1 to 4]</p>
+    <form method="POST" action="emp2.php">
+        <input type="text" name="find_emp_mag"> 
+        <br>
+        <input type="submit" value="submit">
+        <br>
+        <br>
+    </form>
 
-    <table style="width:50%">
+    <?php
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $find_mg= $_POST['find_emp_mag'];
+
+      $find_mg = mysqli_real_escape_string($conn, $find_mg);
+      // this is a small attempt to avoid SQL injection
+      // better to use prepared statements
+
+      $query = "SELECT managertable.ManagerName,managertable.dep_number as Dep_of_Manager, concat(emp.fname,' ',emp.lname) as EmployeeName, emp.dep_number as Dep_of_Emp
+      FROM(SELECT CONCAT(fname,'  ',lname) as ManagerName,SSN,dep_number
+      FROM employee as e, department as dp
+      WHERE e.SSN = dp.mrg_ssn
+      AND dp.dp_number = ";
+      $query = $query."'".$find_mg."')as managertable 
+      LEFT JOIN employee as emp ON managertable.SSN
+      AND managertable.SSN = emp.super_ssn;";
+
+      //print "$query";
+      $result = mysqli_query($conn, $query)
+      or die(mysqli_error($conn));
+
+      print "$res";
+      print "<pre>"; 
+      echo "<table border='7' class='stats' cellspacing='0'>
+
       <tr>
-      <th>First Name</th>
-      <th>Last Name</th> 
-      <th>SSN</th>
-    </tr>
-    <tr>
-      <td>Scarlett</td>
-      <td>Belly</td>
-      <td>222949504</td>
-    </tr>
-    <tr>
-      <td>Vivi</td>
-      <td>Brianna</td>
-      <td>333445555</td>
-    </tr>
-    <tr>
-      <td>Lucy</td>
-      <td>Morg</td>
-      <td>343769695</td>
-    </tr>
-    <tr>
-      <td>Luis</td>
-      <td>Jan</td>
-      <td>345950411</td>
-    </tr>
-    <tr>
-      <td>Molly</td>
-      <td>Olivston</td>
-      <td>434912003</td>
-    </tr>
-    <tr>
-      <td>Madelyn</td>
-      <td>Xavier</td>
-      <td>545769690</td>
-    </tr>
-    <tr>
-      <td>Jeremy</td>
-      <td>Gee</td>
-      <td>632453996</td>
-    </tr>
-    <tr>
-      <td>Mia</td>
-      <td>Katherine</td>
-      <td>648533996</td>
-    </tr>
-    <tr>
-      <td>Jasmine</td>
-      <td>Stipowan</td>
-      <td>683429950</td>
-    </tr>
-    <tr>
-      <td>Kaden</td>
-      <td>Logan</td>
-      <td>700798328</td>
-    </tr>
-    <tr>
-      <td>Vivian</td>
-      <td>Ni</td>
-      <td>719296541</td>
-    </tr>
+      <td class='hed' colspan='8'></td>
+        </tr>
+      <tr>
+      <th>Manager Name </th>
+      <th>Manager Dep NUM  </th>
+      <th>Employee Name </th>
+      <th>Employee Dep NUM </th>
 
-    </table>
-    </div>
+      </tr>";
+      while($row = mysqli_fetch_array($result, MYSQLI_BOTH)){
+        // echo "<br><p1><b>First Name:  </b></b>", $row['fname'], "</p1>";
+          echo "<tr>";
+          echo "<td>$row[ManagerName]   </td>";
+          echo "<td>$row[Dep_of_Manager]   </td>";
+          echo "<td>$row[EmployeeName]   </td>";
+          echo "<td>$row[Dep_of_Emp]   </td>";
+          echo "</tr>\n";
+      }
+      echo "</table>";
+      print "</pre>";
 
+      mysqli_free_result($result);
+
+      mysqli_close($conn);
+    }
+?>
 </div>
 
  <a href="owner.html">
@@ -157,7 +125,7 @@ or die('Error connecting to MySQL server.');
 
 <!-- footer -->
 <footer class="py-4 text-black-50">
-	<div class="container text-center">
+  <div class="container text-center">
     <a href="index.html">
       <img
         style="padding-bottom:6px; width:8%; height:auto; border-radius: 50%;"
