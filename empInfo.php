@@ -31,6 +31,16 @@ or die('Error connecting to MySQL server.');
       margin-left:50%;
       height:500px;
     }
+    .button1{
+      position: absolute;
+      top: 40%;
+      margin-left: 5%;
+    }
+    .button2{
+      position: absolute;
+      top:60%;
+      margin-left: 5%;
+    }
     </style>
 <body>
 
@@ -68,15 +78,15 @@ or die('Error connecting to MySQL server.');
 <br>
 <br>
 <div class="first">
-  <div>
+  <div class = "button1">
     <a href="emp1.php">
-      <button type="submit">Check Employee By Department</button>
+      <button type="submit"  class="btn btn-outline-secondary" >Check Employee By Department</button>
     </a>
   </div>
   
-  <div>
+  <div class = "button2">
     <a href="emp2.php">
-      <button type="submit">Check Employee's Manager</button>
+      <button type="submit"  class="btn btn-outline-secondary">Check Employee's Manager</button>
     </a>
   </div>
 </div>
@@ -151,9 +161,6 @@ or die('Error connecting to MySQL server.');
     </div>
 
 </div>
-
- <a href="owner.html">
-<button type="submit">Back</button>
 </a>
 
 <!-- footer -->

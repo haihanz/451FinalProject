@@ -20,6 +20,51 @@ or die('Error connecting to MySQL server.');
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
   
   <title>Welcome to Duck's Pet Store</title>
+
+  <style>
+    table, td, th, tr {
+    border: 1px solid black;
+    }
+
+    .un {
+    width: 60%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    margin-bottom: 50px;
+    text-align: left;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+    }
+
+    .un:focus{
+        border: 2px solid rgba(0, 0, 0, 0.18) !important;
+    }
+    .sub {
+    cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, rgba(255, 115, 0, 0.89), rgba(251, 139, 64, 0.842));
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    }
+
+
+  </style>
 <body>
 
 </body>
@@ -55,11 +100,10 @@ or die('Error connecting to MySQL server.');
 <br>
 <br>
 <div class="jumbotron min-vh-100">
-    <p>Please Input the Department Number [From 1 to 4]</p>
     <form method="POST" action="emp2.php">
-        <input type="text" name="find_emp_mag"> 
+        <input type="text" name="find_emp_mag" class = "un" placeholder="Department Number eg.1-4" align="center"> 
         <br>
-        <input type="submit" value="submit">
+        <input type="submit" value="submit" class = "sub">
         <br>
         <br>
     </form>
@@ -119,8 +163,8 @@ or die('Error connecting to MySQL server.');
 ?>
 </div>
 
- <a href="owner.html">
-<button type="submit">Back</button>
+ <a href="empInfo.php">
+<button type="submit" class="btn btn-outline-secondary">Back</button>
 </a>
 
 <!-- footer -->

@@ -166,7 +166,7 @@ or die('Error connecting to MySQL server.');
 </div>
 
  <a href="owner.html">
-<button type="submit">Back</button>
+<button  class="btn btn-outline-secondary" type="submit">Back</button>
 </a>
 
 <!-- footer -->

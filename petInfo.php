@@ -162,9 +162,6 @@ or die('Error connecting to MySQL server.');
 ?>
 </div>
 
- <a href="owner.html">
-<button type="submit">Back</button>
-</a>
 
 <!-- footer -->
 <footer class="py-4 text-black-50">
