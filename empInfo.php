@@ -44,14 +44,15 @@ or die('Error connecting to MySQL server.');
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.html">Pet</a></li>
-    <li><a href="receipt.html">Receipt</a></li>
+    <li><a href="pet.php">Pet</a></li>
+    <li><a href="receipt.php">Receipt</a></li>
   </ul>
     </li>
 <li> <a href=""><span>Employee</span></a>
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
     <li><a href="petInfo.php">Pet Information</a></li>
+    <li><a href="empInfo.php">Employee Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>

@@ -20,6 +20,47 @@ or die('Error connecting to MySQL server.');
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
   
   <title>Welcome to Duck's Pet Store</title>
+<style>
+
+.un {
+width: 60%;
+color: rgb(38, 50, 56);
+font-weight: 700;
+font-size: 14px;
+letter-spacing: 1px;
+background: rgba(136, 126, 126, 0.04);
+padding: 10px 20px;
+border: none;
+border-radius: 20px;
+outline: none;
+box-sizing: border-box;
+border: 2px solid rgba(0, 0, 0, 0.02);
+margin-bottom: 50px;
+text-align: left;
+margin-bottom: 27px;
+font-family: 'Ubuntu', sans-serif;
+}
+
+.un:focus{
+    border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+.sub {
+    cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, rgba(255, 115, 0, 0.89), rgba(251, 139, 64, 0.842));
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+</style>
+
 <body>
 
 </body>
@@ -39,7 +80,8 @@ or die('Error connecting to MySQL server.');
 <li> <a href=""><span>Employee</span></a>
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
-    <li><a href="petInfo.html">Pet Information</a></li>
+    <li><a href="petInfo.php">Pet Information</a></li>
+    <li><a href="empInfo.php">Employee Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
@@ -52,12 +94,11 @@ or die('Error connecting to MySQL server.');
 <!-- application1 -->
 <!-- customer name and pet name -->
 <div class="jumbotron min-vh-100">
-    <p>Please Input Your Customer Number</p>
-    <form method="POST" action="pet.php">
-        <input type="text" name="ownerID">
+    <form class = "form1" method="POST" action="pet.php">
+        <input class = "un"type="text" name="ownerID" placeholder="Customer Number eg.1-15" align="center">
 
         <br>
-        <input type="submit" value="submit">
+        <input class = "sub" type="submit" value="submit">
         <br>
     </form>
 
@@ -111,7 +152,7 @@ or die('Error connecting to MySQL server.');
       mysqli_free_result($result);
 
       // select employee who take care of your pet
-      $query2 = "SELECT employee.fname, employee.lname, pet.pet_name
+      $query2 = "SELECT employee.fname, employee.lname, pet.pet_name, employee.tel_number
       FROM owner join pet using (owner_number) join employee on 
       e_ssn = SSN
       WHERE owner_number = ";
@@ -123,6 +164,8 @@ or die('Error connecting to MySQL server.');
       while($row = mysqli_fetch_array($result2, MYSQLI_BOTH)){
         echo "<br>";
         echo "Our empoyee $row[fname]  $row[lname] will take care of your pet $row[pet_name]";
+        echo "<br>"; 
+        echo "Phone Number: $row[tel_number]";
         echo "<br>"; 
       }
       echo "------------------------------------------------------------------------------------";

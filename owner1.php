@@ -20,6 +20,45 @@ or die('Error connecting to MySQL server.');
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crafty+Girls"/>
   
   <title>Welcome to Duck's Pet Store</title>
+
+  <style>
+       .un {
+    width: 60%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    margin-bottom: 50px;
+    text-align: left;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+    }
+
+    .un:focus{
+        border: 2px solid rgba(0, 0, 0, 0.18) !important;
+    }
+    .sub {
+    cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, rgba(255, 115, 0, 0.89), rgba(251, 139, 64, 0.842));
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
 <body>
 
 </body>
@@ -32,14 +71,15 @@ or die('Error connecting to MySQL server.');
 <li><a href="homepage.html">Home</a></li>
 <li> <a href=""><span>Customer</span></a>
       <ul>
-    <li><a href="pet.html">Pet</a></li>
-    <li><a href="receipt.html">Receipt</a></li>
+    <li><a href="pet.php">Pet</a></li>
+    <li><a href="receipt.php">Receipt</a></li>
   </ul>
     </li>
 <li> <a href=""><span>Employee</span></a>
       <ul>
     <li><a href="owner.html">Owner Infomation</a></li>
     <li><a href="petInfo.php">Pet Information</a></li>
+    <li><a href="empInfo.php">Employee Information</a></li>
   </ul>
     </li>
 <li><a href="index.html">Welcome</a></li>
@@ -55,11 +95,10 @@ or die('Error connecting to MySQL server.');
 <br>
 <br>
 <div class="jumbotron min-vh-100">
-    <p>Please Input Owner Number [From 1 to 15]</p>
     <form method="POST" action="owner1.php">
-        <input type="text" name="ownerID"> 
+        <input type="text" name="ownerID" class = "un" placeholder="Customer Number eg.1-15" align="center"> 
         <br>
-        <input type="submit" value="submit">
+        <input type="submit" value="submit" class = "sub">
         <br>
         <br>
     </form>
